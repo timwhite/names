@@ -1,0 +1,11 @@
+name_rank_new:
+    path:   /newname
+    defaults: { _controller: NameRankBundle:Default:new }
+
+name_rank_names:
+    path:   /names
+    defaults: { _controller: NameRankBundle:Default:listNames }
+
+name_rank_compare:
+    path:   /compare
+    defaults: { _controller: NameRankBundle:Default:compareNames }

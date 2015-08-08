@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <table>
+            <tr>
+                <td>{{ name1.name }}</td>
+                <td>{{ name1.rank }}</td>
+                <td>{{ name1.numberOfComparisons }}</td>
+            </tr>
+        <tr>
+            <td>{{ name2.name }}</td>
+            <td>{{ name2.rank }}</td>
+            <td>{{ name2.numberOfComparisons }}</td>
+        </tr>
+    </table>
+    {{ form(form) }}
+{% endblock %}

@@ -1,0 +1,4 @@
+name_rank:
+    resource: "@NameRankBundle/Resources/config/routing.yml"
+    prefix:   /
+

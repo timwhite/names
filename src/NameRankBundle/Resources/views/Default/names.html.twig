@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <table>
+    {% for name in names %}
+        <tr>
+            <td>{{ name.name }}</td>
+            <td>{{ name.rank }}</td>
+            <td>{{ name.numberOfComparisons }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
