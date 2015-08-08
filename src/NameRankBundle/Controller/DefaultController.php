@@ -11,6 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller
 {
 
+    public function indexAction()
+    {
+
+        return $this->render(
+            'NameRankBundle:Default:index.html.twig'
+        );
+
+    }
+
     public function newAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();

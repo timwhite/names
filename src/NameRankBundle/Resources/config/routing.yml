@@ -9,3 +9,7 @@ name_rank_names:
 name_rank_compare:
     path:   /compare
     defaults: { _controller: NameRankBundle:Default:compareNames }
+
+name_rank_home:
+    path: /
+    defaults: { _controller: NameRankBundle:Default:index }

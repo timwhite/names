@@ -1,1 +1,9 @@
-Hello {{ name }}!
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<a href="{{ path('name_rank_new') }}">Add Names</a>
+<a href="{{ path('name_rank_compare') }}">Compare names</a>
+<a href="{{ path('name_rank_names') }}">Show Rank</a>
+
+{% endblock %}
