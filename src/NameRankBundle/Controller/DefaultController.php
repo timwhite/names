@@ -169,6 +169,7 @@ class DefaultController extends Controller
             JOIN NameRankBundle\Entity\Ranking r
             WHERE n.id = r.name
             GROUP BY n.id
+            ORDER BY overallrank DESC
         ')->execute();
 
         return $this->render(
