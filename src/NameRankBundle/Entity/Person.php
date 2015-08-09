@@ -30,6 +30,7 @@ class Person
 
     /**
      * @ORM\OneToMany(targetEntity="Ranking", mappedBy="person")
+     * @ORM\OrderBy({"rank" = "DESC"})
      */
     private $rankings;
 
