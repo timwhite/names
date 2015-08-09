@@ -128,4 +128,17 @@ class Name
     {
         return $this->ranking;
     }
+
+    /**
+     * Get overall ranking
+     */
+    public function getRank()
+    {
+        $overallrank =0;
+        foreach($this->getRanking() as $rank)
+        {
+            $overallrank += $rank->getRank();
+        }
+        return $overallrank;
+    }
 }

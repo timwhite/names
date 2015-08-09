@@ -163,11 +163,20 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $people = $em->getRepository('NameRankBundle:Person');
+        $names = $em->createQuery('
+            SELECT n, SUM(r.rank) as HIDDEN overallrank
+            FROM NameRankBundle\Entity\Name n
+            JOIN NameRankBundle\Entity\Ranking r
+            WHERE n.id = r.name
+            GROUP BY n.id
+        ')->execute();
 
         return $this->render(
             'NameRankBundle:Default:names.html.twig',
             [
-                'people' => $people->findAll()
+                'people' => $people->findAll(),
+                'names' => $names,
+
             ]
         );
 
