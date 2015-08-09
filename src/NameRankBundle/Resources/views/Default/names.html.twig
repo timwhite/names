@@ -11,6 +11,7 @@
             <th>Name</th>
             <th>Rank</th>
             <th>#</th>
+            <th></th>
         </tr>
         </thead>
     {% for rank in person.rankings %}
@@ -19,6 +20,12 @@
             <td>{{ rank.name.name }}</td>
             <td>{{ rank.rank }}</td>
             <td>{{ rank.numberOfComparisons }}</td>
+            <td><a
+                        href="{{ path('name_rank_delete', {'id': rank.name.id}) }}"
+                        data-toggle="tooltip"
+                        title="Delete {{ rank.name.name }}"
+                        onclick="return confirm('Are you sure you want to delete {{ rank.name.name }}?')"
+                        ><span class="glyphicon glyphicon-remove text-danger""></span></a></td>
         </tr>
         {% endif %}
     {% endfor %}
@@ -32,6 +39,7 @@
             <th>Name</th>
             <th>Rank</th>
             <th>#</th>
+            <th></th>
         </tr>
         </thead>
         {% for rank in person.rankings %}
@@ -40,6 +48,12 @@
                     <td>{{ rank.name.name }}</td>
                     <td>{{ rank.rank }}</td>
                     <td>{{ rank.numberOfComparisons }}</td>
+                    <td><a
+                                href="{{ path('name_rank_delete', {'id': rank.name.id}) }}"
+                                data-toggle="tooltip"
+                                title="Delete {{ rank.name.name }}"
+                                onclick="return confirm('Are you sure you want to delete {{ rank.name.name }}?')"
+                                ><span class="glyphicon glyphicon-remove text-danger""></span></a></td>
                 </tr>
             {% endif %}
         {% endfor %}

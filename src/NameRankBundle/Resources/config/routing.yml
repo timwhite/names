@@ -1,6 +1,11 @@
 name_rank_new:
-    path:   /newname
+    path:   /name/new
     defaults: { _controller: NameRankBundle:Default:new }
+
+name_rank_delete:
+    path:   /name/delete/{id}
+    defaults: { _controller: NameRankBundle:Default:deleteName }
+
 
 name_rank_name_updateall:
     path:   /name/updateall

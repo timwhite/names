@@ -73,6 +73,25 @@ class DefaultController extends Controller
         );
     }
 
+    public function deleteNameAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $names = $em->getRepository('NameRankBundle:Name');
+        $name = $names->findById($id)[0];
+
+        foreach($name->getRanking() as $ranking)
+        {
+            $em->remove($ranking);
+        }
+
+        $em->remove($name);
+
+        $em->flush();
+
+        return $this->redirectToRoute('name_rank_names');
+
+    }
+
     public function updateAllAction(Request $request)
     {
         $number_of_names_to_update = 0;
