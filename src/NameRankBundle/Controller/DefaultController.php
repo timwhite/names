@@ -177,7 +177,7 @@ class DefaultController extends Controller
         $person = $people->findById($personid)[0];
 
         $query = $em->createQuery('
-          SELECT r, (RAND() * (n.numberOfComparisons + 1)) as HIDDEN randcomp
+          SELECT r, (RAND() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
           FROM NameRankBundle\Entity\Ranking r JOIN NameRankBundle\Entity\Name n
           WHERE n.is_male = :ismale
           AND r.person = :person
@@ -190,7 +190,7 @@ class DefaultController extends Controller
 
 
         $query = $em->createQuery('
-          SELECT r, (RAND() * (n.numberOfComparisons + 1)) as HIDDEN randcomp
+          SELECT r, (RAND() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
           FROM NameRankBundle\Entity\Ranking r JOIN NameRankBundle\Entity\Name n
           WHERE  n.is_male = :ismale AND r.id != :id
           AND r.person = :person
