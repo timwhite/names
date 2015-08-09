@@ -198,7 +198,8 @@ class DefaultController extends Controller
         $query = $em->createQuery('
           SELECT r, (RAND() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
           FROM NameRankBundle\Entity\Ranking r JOIN NameRankBundle\Entity\Name n
-          WHERE n.is_male = :ismale
+          WHERE n.id = r.name
+          AND n.is_male = :ismale
           AND r.person = :person
           ORDER BY randcomp');
         $query->setMaxResults(1);
@@ -211,7 +212,9 @@ class DefaultController extends Controller
         $query = $em->createQuery('
           SELECT r, (RAND() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
           FROM NameRankBundle\Entity\Ranking r JOIN NameRankBundle\Entity\Name n
-          WHERE  n.is_male = :ismale AND r.id != :id
+          WHERE n.id = r.name
+          AND n.is_male = :ismale
+          AND r.id != :id
           AND r.person = :person
           ORDER BY randcomp');
         $query->setMaxResults(1);
