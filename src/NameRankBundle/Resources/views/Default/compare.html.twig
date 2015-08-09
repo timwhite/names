@@ -1,35 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <!--<table>
-            <tr>
-                <td>{{ name1.name }}</td>
-                <td>{{ name1.rank }}</td>
-                <td>{{ name1.numberOfComparisons }}</td>
-            </tr>
-        <tr>
-            <td>{{ name2.name }}</td>
-            <td>{{ name2.rank }}</td>
-            <td>{{ name2.numberOfComparisons }}</td>
-        </tr>
-    </table>-->
-    <div class="row">
-        <div class="col-xs-12">
+
     {% if ismale %}
-        <h3>Male</h3>
+        {% set genderclass = 'btn btn-primary btn-lg btn-block' %}
     {% else %}
-        <h3>Female</h3>
+        {% set genderclass = 'btn btn-success btn-lg btn-block' %}
     {% endif %}
+    {{ form_start(form) }}
+    &nbsp;
+    <div class="row">
+
+        <div class="col-xs-12">
+            {{ form_widget(form.name1, {'attr': {'class': genderclass}}) }}
         </div>
     </div>
+    &nbsp;
     <div class="row">
-    {{ form_start(form) }}
-    <div class="col-xs-6">
-{{ form_widget(form.name1, {'attr': {'class': 'btn btn-primary btn-lg btn-block'}}) }}
-    </div>
-    <div class="col-xs-6">
-    {{ form_widget(form.name2, {'attr': {'class': 'btn btn-primary btn-lg btn-block'}}) }}
+        <div class="col-xs-12">
+            {{ form_widget(form.name2, {'attr': {'class': genderclass}}) }}
+        </div>
+
     </div>
     {{ form_end(form) }}
-    </div>
 {% endblock %}
