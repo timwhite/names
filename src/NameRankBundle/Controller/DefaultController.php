@@ -143,13 +143,11 @@ class DefaultController extends Controller
     public function listNamesAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $names = $em->getRepository('NameRankBundle:Name')->findBy(array(),array('rank' => 'DESC')); //TODO remove
         $people = $em->getRepository('NameRankBundle:Person');
 
         return $this->render(
             'NameRankBundle:Default:names.html.twig',
             [
-                'names' => $names,
                 'people' => $people->findAll()
             ]
         );

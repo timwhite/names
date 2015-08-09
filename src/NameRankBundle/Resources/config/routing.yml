@@ -29,5 +29,5 @@ name_rank_home:
     path: /
     defaults:
         _controller: FrameworkBundle:Redirect:redirect
-        route: name_rank_compare
+        route: name_rank_compare_as
         permanent: false
