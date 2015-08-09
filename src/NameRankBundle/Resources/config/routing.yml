@@ -12,4 +12,7 @@ name_rank_compare:
 
 name_rank_home:
     path: /
-    defaults: { _controller: NameRankBundle:Default:index }
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: name_rank_compare
+        permanent: false
