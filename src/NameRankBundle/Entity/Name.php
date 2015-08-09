@@ -28,20 +28,6 @@ class Name
      */
     private $name;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="rank", type="integer", nullable=False)
-     */
-    private $rank = 1000;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="numberOfComparisons", type="integer", nullable=False)
-     */
-    private $numberOfComparisons = 0;
-
 
     /**
      * @var integer
@@ -88,64 +74,6 @@ class Name
     {
         return $this->name;
     }
-
-    /**
-     * Set rank
-     *
-     * @param integer $rank
-     * @return Name
-     */
-    public function setRank($rank)
-    {
-        $this->rank = $rank;
-
-        return $this;
-    }
-
-    /**
-     * Get rank
-     *
-     * @return integer 
-     */
-    public function getRank()
-    {
-        $ranksum = 0;
-        foreach($this->getRanking() as $rank)
-        {
-            $ranksum += $rank->getRank();
-        }
-        return $ranksum;
-    }
-
-    /**
-     * Set numberOfComparisons
-     *
-     * @param integer $numberOfComparisons
-     * @return Name
-     */
-    public function setNumberOfComparisons($numberOfComparisons)
-    {
-        $this->numberOfComparisons = $numberOfComparisons;
-
-        return $this;
-    }
-
-    /**
-     * Get numberOfComparisons
-     *
-     * @return integer 
-     */
-    public function getNumberOfComparisons()
-    {
-        return $this->numberOfComparisons;
-    }
-
-    public function incrementNumberOfComparisons()
-    {
-        $this->numberOfComparisons++;
-    }
-
-
 
     /**
      * Set is_male
