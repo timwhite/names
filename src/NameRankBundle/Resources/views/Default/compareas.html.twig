@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Who are you comparing as?</h1>
+
+        {% for person in people %}
+            <a class="btn btn-warning" href="{{ path('name_rank_compare', {'personid': person.id}) }}">{{ person.name }}</a>
+        {% endfor %}
+
+
+{% endblock %}

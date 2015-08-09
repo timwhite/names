@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% for person in people %}
+        <h3>Rankings for {{ person.name }}</h3>
 <div class="row">
     <div class="col-xs-6 table-responsive">
     <table class="table table-condensed">
@@ -8,15 +10,15 @@
         <tr>
             <th>Name</th>
             <th>Rank</th>
-            <th># Comparisons</th>
+            <th>#</th>
         </tr>
         </thead>
-    {% for name in names %}
-        {% if name.isMale %}
+    {% for rank in person.rankings %}
+        {% if rank.name.isMale %}
         <tr>
-            <td>{{ name.name }}</td>
-            <td>{{ name.rank }}</td>
-            <td>{{ name.numberOfComparisons }}</td>
+            <td>{{ rank.name.name }}</td>
+            <td>{{ rank.rank }}</td>
+            <td>{{ rank.numberOfComparisons }}</td>
         </tr>
         {% endif %}
     {% endfor %}
@@ -32,16 +34,17 @@
             <th># Comparisons</th>
         </tr>
         </thead>
-        {% for name in names %}
-            {% if not name.isMale %}
+        {% for rank in person.rankings %}
+            {% if not rank.name.isMale %}
                 <tr>
-                    <td>{{ name.name }}</td>
-                    <td>{{ name.rank }}</td>
-                    <td>{{ name.numberOfComparisons }}</td>
+                    <td>{{ rank.name.name }}</td>
+                    <td>{{ rank.rank }}</td>
+                    <td>{{ rank.numberOfComparisons }}</td>
                 </tr>
             {% endif %}
         {% endfor %}
     </table>
     </div>
 </div>
+{% endfor %}
 {% endblock %}

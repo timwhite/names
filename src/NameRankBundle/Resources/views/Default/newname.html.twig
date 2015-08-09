@@ -2,4 +2,10 @@
 
 {% block body %}
 {{ form(newform) }}
+
+    <ul>
+        {% for name in names %}
+            <li>{{ name.name }} {% if name.ismale %}(M){% else %}(F){% endif %}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

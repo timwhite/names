@@ -14,9 +14,12 @@
 <div class="container-fluid">
     {% block nav %}
         <ul class="nav nav-tabs nav-justified">
+            <li><a href="{{ path('name_rank_person_new') }}">Add Person</a></li>
             <li><a href="{{ path('name_rank_new') }}">Add Names</a></li>
-            <li><a href="{{ path('name_rank_compare') }}">Compare names</a></li>
+            <li><a href="{{ path('name_rank_compare_as') }}">Compare names</a></li>
             <li><a href="{{ path('name_rank_names') }}">Show Rank</a></li>
+            <li><a href="{{ path('name_rank_name_updateall') }}">Update All</a></li>
+
         </ul>
     {% endblock %}
     {% block body %}{% endblock %}

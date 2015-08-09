@@ -2,13 +2,28 @@ name_rank_new:
     path:   /newname
     defaults: { _controller: NameRankBundle:Default:new }
 
+name_rank_name_updateall:
+    path:   /name/updateall
+    defaults: { _controller: NameRankBundle:Default:updateAll }
+
+
+name_rank_person_new:
+    path:   /person/new
+    defaults: { _controller: NameRankBundle:Default:newPerson }
+
+
 name_rank_names:
     path:   /names
     defaults: { _controller: NameRankBundle:Default:listNames }
 
 name_rank_compare:
-    path:   /compare
+    path:   /compare/{personid}
     defaults: { _controller: NameRankBundle:Default:compareNames }
+
+name_rank_compare_as:
+    path:   /compare/
+    defaults: { _controller: NameRankBundle:Default:compareAs }
+
 
 name_rank_home:
     path: /

@@ -50,6 +50,11 @@ class Name
      */
     private $is_male = True;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Ranking", mappedBy="name")
+     */
+    private $ranking;
+
 
     /**
      * Get id
@@ -104,7 +109,12 @@ class Name
      */
     public function getRank()
     {
-        return $this->rank;
+        $ranksum = 0;
+        foreach($this->getRanking() as $rank)
+        {
+            $ranksum += $rank->getRank();
+        }
+        return $ranksum;
     }
 
     /**
@@ -158,5 +168,36 @@ class Name
     public function getIsMale()
     {
         return $this->is_male;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ranking = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add ranking
+     *
+     * @param \NameRankBundle\Entity\Ranking $ranking
+     * @return Name
+     */
+    public function addRanking(\NameRankBundle\Entity\Ranking $ranking)
+    {
+        $this->ranking[] = $ranking;
+        $ranking->setName($this);
+
+        return $this;
+    }
+
+    /**
+     * Get ranking
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRanking()
+    {
+        return $this->ranking;
     }
 }

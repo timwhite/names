@@ -2,13 +2,14 @@
 
 {% block body %}
 
+
     {% if ismale %}
         {% set genderclass = 'btn btn-primary btn-lg btn-block' %}
     {% else %}
         {% set genderclass = 'btn btn-success btn-lg btn-block' %}
     {% endif %}
     {{ form_start(form) }}
-    &nbsp;
+    Comparing names as {{ person.name }}
     <div class="row">
 
         <div class="col-xs-12">
