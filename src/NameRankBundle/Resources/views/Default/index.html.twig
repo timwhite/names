@@ -2,8 +2,10 @@
 
 {% block body %}
 
-<a href="{{ path('name_rank_new') }}">Add Names</a>
-<a href="{{ path('name_rank_compare') }}">Compare names</a>
-<a href="{{ path('name_rank_names') }}">Show Rank</a>
+    <ul>
+        <li><a href="{{ path('name_rank_new') }}">Add Names</a></li>
+        <li><a href="{{ path('name_rank_compare') }}">Compare names</a></li>
+        <li><a href="{{ path('name_rank_names') }}">Show Rank</a></li>
+    </ul>
 
 {% endblock %}

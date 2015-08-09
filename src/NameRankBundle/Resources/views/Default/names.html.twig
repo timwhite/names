@@ -1,13 +1,47 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <table>
+<div class="row">
+    <div class="col-xs-6 table-responsive">
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Rank</th>
+            <th># Comparisons</th>
+        </tr>
+        </thead>
     {% for name in names %}
+        {% if name.isMale %}
         <tr>
             <td>{{ name.name }}</td>
             <td>{{ name.rank }}</td>
             <td>{{ name.numberOfComparisons }}</td>
         </tr>
+        {% endif %}
     {% endfor %}
     </table>
+    </div>
+
+    <div class="col-xs-6 table-responsive">
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Rank</th>
+            <th># Comparisons</th>
+        </tr>
+        </thead>
+        {% for name in names %}
+            {% if not name.isMale %}
+                <tr>
+                    <td>{{ name.name }}</td>
+                    <td>{{ name.rank }}</td>
+                    <td>{{ name.numberOfComparisons }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    </div>
+</div>
 {% endblock %}

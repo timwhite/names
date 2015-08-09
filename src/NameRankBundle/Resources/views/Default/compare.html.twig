@@ -13,5 +13,23 @@
             <td>{{ name2.numberOfComparisons }}</td>
         </tr>
     </table>-->
-    {{ form(form) }}
+    <div class="row">
+        <div class="col-xs-12">
+    {% if ismale %}
+        <h3>Male</h3>
+    {% else %}
+        <h3>Female</h3>
+    {% endif %}
+        </div>
+    </div>
+    <div class="row">
+    {{ form_start(form) }}
+    <div class="col-xs-6">
+{{ form_widget(form.name1, {'attr': {'class': 'btn btn-primary btn-lg btn-block'}}) }}
+    </div>
+    <div class="col-xs-6">
+    {{ form_widget(form.name2, {'attr': {'class': 'btn btn-primary btn-lg btn-block'}}) }}
+    </div>
+    {{ form_end(form) }}
+    </div>
 {% endblock %}

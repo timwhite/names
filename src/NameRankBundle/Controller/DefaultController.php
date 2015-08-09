@@ -122,6 +122,7 @@ class DefaultController extends Controller
             [
                 'name1' => $name1[0],
                 'name2' => $name2[0],
+                'ismale' => $ismale,
                 'form' => $form->createView(),
             ]
         );
