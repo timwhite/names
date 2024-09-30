@@ -2,34 +2,31 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Person
- *
- * @ORM\Table()
- * @ORM\Entity
  */
+#[ORM\Table]
+#[ORM\Entity]
 class Person
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
      */
+    #[ORM\Column(name: 'name', type: 'string', length: 255)]
     private $name;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Ranking", mappedBy="person")
-     * @ORM\OrderBy({"rank" = "DESC"})
-     */
+    #[ORM\OneToMany(targetEntity: \Ranking::class, mappedBy: 'person')]
+    #[ORM\OrderBy(['rank' => 'DESC'])]
     private $rankings;
 
 

@@ -15,9 +15,11 @@ return RectorConfig::configure()
         \Rector\Doctrine\Set\DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
         \Rector\Symfony\Set\SymfonySetList::ANNOTATIONS_TO_ATTRIBUTES,
         \Rector\Symfony\Set\SensiolabsSetList::ANNOTATIONS_TO_ATTRIBUTES,
+        \Rector\Symfony\Set\SymfonySetList::SYMFONY_64,
     ])
+    ->withAttributesSets(doctrine: true)
 
     // uncomment to reach your current PHP version
     ->withPhpSets()
-    //->withTypeCoverageLevel(0)
+    ->withTypeCoverageLevel(0)
     ;

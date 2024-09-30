@@ -2,41 +2,37 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Name
- *
- * @ORM\Table()
- * @ORM\Entity
  */
+#[ORM\Table]
+#[ORM\Entity]
 class Name
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=False)
      */
+    #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
     private $name;
 
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="is_male", type="integer", nullable=False)
      */
+    #[ORM\Column(name: 'is_male', type: 'integer', nullable: false)]
     private $is_male = True;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Ranking", mappedBy="name")
-     */
+    #[ORM\OneToMany(targetEntity: \Ranking::class, mappedBy: 'name')]
     private $ranking;
 
 

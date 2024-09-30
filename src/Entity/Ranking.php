@@ -2,47 +2,41 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Ranking
- *
- * @ORM\Table()
- * @ORM\Entity
  */
+#[ORM\Table]
+#[ORM\Entity]
 class Ranking
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="rank", type="integer")
      */
+    #[ORM\Column(name: 'rank', type: 'integer')]
     private $rank = 1000;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="numberOfComparisons", type="integer")
      */
+    #[ORM\Column(name: 'numberOfComparisons', type: 'integer')]
     private $numberOfComparisons = 0;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Name", inversedBy="ranking")
-     * @ORM\JoinColumn(name="name_id", referencedColumnName="id", nullable=false)
-     */
+    #[ORM\JoinColumn(name: 'name_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \Name::class, inversedBy: 'ranking')]
     private $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="person_id", referencedColumnName="id", nullable=false)
-     */
+    #[ORM\JoinColumn(name: 'person_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\ManyToOne(targetEntity: \Person::class)]
     private $person;
 
 
