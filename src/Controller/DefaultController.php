@@ -1,25 +1,29 @@
 <?php
 
-namespace NameRankBundle\Controller;
+namespace App\Controller;
 
-use NameRankBundle\Entity\Name;
-use NameRankBundle\Entity\Person;
-use NameRankBundle\Entity\Ranking;
+use App\Entity\Name;
+use App\Entity\Person;
+use App\Entity\Ranking;
+use Doctrine\ORM\EntityManagerInterface;
 use NameRankBundle\Form\NameType;
 use NameRankBundle\Form\PersonType;
 use Rating\Rating;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 
-class DefaultController extends Controller
+#[Route(name: 'name_rank_')]
+class DefaultController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $em
+    ){}
 
+    #[Route(path: '/person/new', name: 'person_name')]
     public function newPersonAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $people = $em->getRepository('NameRankBundle:Person')->findAll();
-
+        $people = $this->em->getRepository('NameRankBundle:Person')->findAll();
 
         $person = new Person();
         $form = $this->createForm(new PersonType(), $person);
@@ -28,15 +32,15 @@ class DefaultController extends Controller
 
         if ($form->isValid()) {
             // save
-            $em->persist($person);
+            $this->em->persist($person);
 
-            $em->flush();
+            $this->em->flush();
 
             return $this->redirectToRoute('name_rank_person_new');
         }
 
         return $this->render(
-            'NameRankBundle:Default:person.html.twig',
+            'person.html.twig',
             [
                 'newform' => $form->createView(),
                 'people' => $people
@@ -46,8 +50,7 @@ class DefaultController extends Controller
 
     public function newAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $names = $em->getRepository('NameRankBundle:Name');
+        $names = $this->em->getRepository('NameRankBundle:Name');
 
         $name = new Name();
         $form = $this->createForm(new NameType(), $name);
@@ -56,10 +59,10 @@ class DefaultController extends Controller
 
         if ($form->isValid()) {
             // save
-            $em->persist($name);
+            $this->em->persist($name);
             $this->createRankingForAllPeople($name);
 
-            $em->flush();
+            $this->em->flush();
 
             return $this->redirectToRoute('name_rank_new');
         }
@@ -75,18 +78,17 @@ class DefaultController extends Controller
 
     public function deleteNameAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $names = $em->getRepository('NameRankBundle:Name');
+        $names = $this->em->getRepository('NameRankBundle:Name');
         $name = $names->findById($id)[0];
 
         foreach($name->getRanking() as $ranking)
         {
-            $em->remove($ranking);
+            $this->em->remove($ranking);
         }
 
-        $em->remove($name);
+        $this->em->remove($name);
 
-        $em->flush();
+        $this->em->flush();
 
         return $this->redirectToRoute('name_rank_names');
 
@@ -96,8 +98,7 @@ class DefaultController extends Controller
     {
         $number_of_names_to_update = 0;
 
-        $em = $this->getDoctrine()->getManager();
-        $names = $em->getRepository('NameRankBundle:Name')->findAll();
+        $names = $this->em->getRepository('NameRankBundle:Name')->findAll();
 
         $form = $this->createFormBuilder()
             ->add('UpdateAll', 'submit', array('label' => 'Update All Rankings'))
@@ -135,8 +136,7 @@ class DefaultController extends Controller
     private function createRankingForAllPeople($name, $count = false)
     {
         // Fetch all people who don't already have a ranking for $name
-        $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery("
+        $query = $this->em->createQuery("
           SELECT p FROM NameRankBundle\Entity\Person p WHERE p.id NOT IN (
             SELECT IDENTITY(r.person) FROM NameRankBundle\Entity\Ranking r WHERE r.name = :nameid
            )");
@@ -152,18 +152,17 @@ class DefaultController extends Controller
             $name->addRanking($ranking);
             $person->addRanking($ranking);
 
-            $em->persist($ranking);
-            $em->persist($name);
-            $em->persist($person);
+            $this->em->persist($ranking);
+            $this->em->persist($name);
+            $this->em->persist($person);
         }
-        return $em->flush();
+        return $this->em->flush();
     }
 
     public function listNamesAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $people = $em->getRepository('NameRankBundle:Person');
-        $names = $em->createQuery('
+        $people = $this->em->getRepository('NameRankBundle:Person');
+        $names = $this->em->createQuery('
             SELECT n, SUM(r.rank) as HIDDEN overallrank
             FROM NameRankBundle\Entity\Name n
             JOIN NameRankBundle\Entity\Ranking r
@@ -183,13 +182,14 @@ class DefaultController extends Controller
 
     }
 
+    #[Route(path: '/compare/', name: 'compare_as')]
+    #[Route(path: '/', name: 'compare_as_home')]
     public function compareAsAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $people = $em->getRepository('NameRankBundle:Person');
+        $people = $this->em->getRepository('NameRankBundle:Person');
 
         return $this->render(
-            'NameRankBundle:Default:compareas.html.twig',
+            'compareas.html.twig',
             [
                 'people' => $people->findAll()
             ]
@@ -201,11 +201,10 @@ class DefaultController extends Controller
     {
         $ismale = rand(0,1);
 
-        $em = $this->getDoctrine()->getManager();
-        $people = $em->getRepository('NameRankBundle:Person');
+        $people = $this->em->getRepository('NameRankBundle:Person');
         $person = $people->findById($personid)[0];
 
-        $query = $em->createQuery('
+        $query = $this->em->createQuery('
           SELECT r, (RAND() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
           FROM NameRankBundle\Entity\Ranking r JOIN NameRankBundle\Entity\Name n
           WHERE n.id = r.name
@@ -219,7 +218,7 @@ class DefaultController extends Controller
         $name1 = $ranking1[0]->getName();
 
 
-        $query = $em->createQuery('
+        $query = $this->em->createQuery('
           SELECT r, (RAND() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
           FROM NameRankBundle\Entity\Ranking r JOIN NameRankBundle\Entity\Name n
           WHERE n.id = r.name
@@ -246,7 +245,7 @@ class DefaultController extends Controller
 
         if($form->isSubmitted())
         {
-            $rankings = $em->getRepository('NameRankBundle:Ranking');
+            $rankings = $this->em->getRepository('NameRankBundle:Ranking');
             $ranking1 = $rankings->findById($form->get('name1val')->getData())[0];
             $ranking2 = $rankings->findById($form->get('name2val')->getData())[0];
             if($form->get('name1')->isClicked())
@@ -265,9 +264,9 @@ class DefaultController extends Controller
             $ranking1->incrementNumberOfComparisons();
             $ranking2->setRank($results['b']);
             $ranking2->incrementNumberOfComparisons();
-            $em->persist($ranking1);
-            $em->persist($ranking2);
-            $em->flush();
+            $this->em->persist($ranking1);
+            $this->em->persist($ranking2);
+            $this->em->flush();
 
             return $this->redirectToRoute('name_rank_compare', ['personid' => $personid]);
         }

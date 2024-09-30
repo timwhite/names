@@ -1,8 +1,6 @@
 <?php
 
-namespace NameRankBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
+namespace App\Entity;
 
 /**
  * Ranking
@@ -113,10 +111,10 @@ class Ranking
     /**
      * Set name
      *
-     * @param \NameRankBundle\Entity\Name $name
+     * @param \App\Entity\Name $name
      * @return Ranking
      */
-    public function setName(\NameRankBundle\Entity\Name $name)
+    public function setName(\App\Entity\Name $name)
     {
         $this->name = $name;
 
@@ -126,7 +124,7 @@ class Ranking
     /**
      * Get name
      *
-     * @return \NameRankBundle\Entity\Name 
+     * @return \App\Entity\Name
      */
     public function getName()
     {
@@ -136,10 +134,10 @@ class Ranking
     /**
      * Set person
      *
-     * @param \NameRankBundle\Entity\Person $person
+     * @param \App\Entity\Person $person
      * @return Ranking
      */
-    public function setPerson(\NameRankBundle\Entity\Person $person)
+    public function setPerson(\App\Entity\Person $person)
     {
         $this->person = $person;
 
@@ -149,7 +147,7 @@ class Ranking
     /**
      * Get person
      *
-     * @return \NameRankBundle\Entity\Person 
+     * @return \App\Entity\Person
      */
     public function getPerson()
     {

@@ -1,8 +1,6 @@
 <?php
 
-namespace NameRankBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
+namespace App\Entity;
 
 /**
  * Person
@@ -78,10 +76,10 @@ class Person
     /**
      * Add rankings
      *
-     * @param \NameRankBundle\Entity\Ranking $rankings
+     * @param \App\Entity\Ranking $rankings
      * @return Person
      */
-    public function addRanking(\NameRankBundle\Entity\Ranking $rankings)
+    public function addRanking(\App\Entity\Ranking $rankings)
     {
         $this->rankings[] = $rankings;
         $rankings->setPerson($this);
@@ -92,9 +90,9 @@ class Person
     /**
      * Remove rankings
      *
-     * @param \NameRankBundle\Entity\Ranking $rankings
+     * @param \App\Entity\Ranking $rankings
      */
-    public function removeRanking(\NameRankBundle\Entity\Ranking $rankings)
+    public function removeRanking(\App\Entity\Ranking $rankings)
     {
         $this->rankings->removeElement($rankings);
     }

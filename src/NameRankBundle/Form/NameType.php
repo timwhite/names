@@ -30,7 +30,7 @@ class NameType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'NameRankBundle\Entity\Name'
+            'data_class' => 'App\Entity\Name'
         ));
     }
 

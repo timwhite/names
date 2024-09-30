@@ -12,11 +12,6 @@ name_rank_name_updateall:
     defaults: { _controller: NameRankBundle:Default:updateAll }
 
 
-name_rank_person_new:
-    path:   /person/new
-    defaults: { _controller: NameRankBundle:Default:newPerson }
-
-
 name_rank_names:
     path:   /names
     defaults: { _controller: NameRankBundle:Default:listNames }

@@ -1,8 +1,6 @@
 <?php
 
-namespace NameRankBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
+namespace App\Entity;
 
 /**
  * Name
@@ -108,10 +106,10 @@ class Name
     /**
      * Add ranking
      *
-     * @param \NameRankBundle\Entity\Ranking $ranking
+     * @param \App\Entity\Ranking $ranking
      * @return Name
      */
-    public function addRanking(\NameRankBundle\Entity\Ranking $ranking)
+    public function addRanking(\App\Entity\Ranking $ranking)
     {
         $this->ranking[] = $ranking;
         $ranking->setName($this);
