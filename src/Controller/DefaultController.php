@@ -8,7 +8,6 @@ use App\Entity\Ranking;
 use App\Form\NameType;
 use App\Form\PersonType;
 use Doctrine\ORM\EntityManagerInterface;
-use Rating\Rating;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
