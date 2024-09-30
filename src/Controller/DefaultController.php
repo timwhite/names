@@ -101,7 +101,7 @@ class DefaultController extends AbstractController
         $names = $this->em->getRepository('NameRankBundle:Name')->findAll();
 
         $form = $this->createFormBuilder()
-            ->add('UpdateAll', 'submit', array('label' => 'Update All Rankings'))
+            ->add('UpdateAll', 'submit', ['label' => 'Update All Rankings'])
             ->getForm()
         ;
 
@@ -184,9 +184,9 @@ class DefaultController extends AbstractController
 
     #[Route(path: '/compare/', name: 'compare_as')]
     #[Route(path: '/', name: 'compare_as_home')]
-    public function compareAsAction(Request $request)
+    public function compareAs()
     {
-        $people = $this->em->getRepository('NameRankBundle:Person');
+        $people = $this->em->getRepository(Person::class);
 
         return $this->render(
             'compareas.html.twig',
@@ -199,7 +199,7 @@ class DefaultController extends AbstractController
 
     public function compareNamesAction(Request $request, $personid)
     {
-        $ismale = rand(0,1);
+        $ismale = random_int(0,1);
 
         $people = $this->em->getRepository('NameRankBundle:Person');
         $person = $people->findById($personid)[0];
@@ -234,8 +234,8 @@ class DefaultController extends AbstractController
         $name2 = $ranking2[0]->getName();
 
         $form = $this->createFormBuilder()
-            ->add('name1', 'submit', array('label' => $name1->getName()))
-            ->add('name2', 'submit', array('label' => $name2->getName()))
+            ->add('name1', 'submit', ['label' => $name1->getName()])
+            ->add('name2', 'submit', ['label' => $name2->getName()])
             ->add('name1val', 'hidden', ['data' => $ranking1[0]->getId()])
             ->add('name2val', 'hidden', ['data' => $ranking2[0]->getId()])
             ->getForm()

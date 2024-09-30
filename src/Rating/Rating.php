@@ -18,15 +18,6 @@ class Rating
      */
     const KFACTOR = 16;
 
-    /**
-     * Protected & private variables.
-     */
-    protected $_ratingA;
-    protected $_ratingB;
-    
-    protected $_scoreA;
-    protected $_scoreB;
-
     protected $_expectedA;
     protected $_expectedB;
 
@@ -42,13 +33,11 @@ class Rating
      * @param int Score of A
      * @param int Score of B
      */
-    public function  __construct($ratingA,$ratingB,$scoreA,$scoreB)
+    public function  __construct(/**
+     * Protected & private variables.
+     */
+    protected $_ratingA,protected $_ratingB,protected $_scoreA,protected $_scoreB)
     {
-        $this->_ratingA = $ratingA;
-        $this->_ratingB = $ratingB;
-        $this->_scoreA = $scoreA;
-        $this->_scoreB = $scoreB;
-
         $expectedScores = $this -> _getExpectedScores($this -> _ratingA,$this -> _ratingB);
         $this->_expectedA = $expectedScores['a'];
         $this->_expectedB = $expectedScores['b'];
@@ -89,10 +78,7 @@ class Rating
      */
     public function getNewRatings()
     {
-        return array (
-            'a' => $this -> _newRatingA,
-            'b' => $this -> _newRatingB
-        );
+        return ['a' => $this -> _newRatingA, 'b' => $this -> _newRatingB];
     }
 
     /**
@@ -101,13 +87,10 @@ class Rating
 
     protected function _getExpectedScores($ratingA,$ratingB)
     {
-        $expectedScoreA = 1 / ( 1 + ( pow( 10 , ( $ratingB - $ratingA ) / 400 ) ) );
-        $expectedScoreB = 1 / ( 1 + ( pow( 10 , ( $ratingA - $ratingB ) / 400 ) ) );
+        $expectedScoreA = 1 / ( 1 + ( 10 ** (( $ratingB - $ratingA ) / 400) ) );
+        $expectedScoreB = 1 / ( 1 + ( 10 ** (( $ratingA - $ratingB ) / 400) ) );
 
-        return array (
-            'a' => $expectedScoreA,
-            'b' => $expectedScoreB
-        );
+        return ['a' => $expectedScoreA, 'b' => $expectedScoreB];
     }
 
     protected function _getNewRatings($ratingA,$ratingB,$expectedA,$expectedB,$scoreA,$scoreB)
@@ -115,10 +98,7 @@ class Rating
         $newRatingA = $ratingA + ( self::KFACTOR * ( $scoreA - $expectedA ) );
         $newRatingB = $ratingB + ( self::KFACTOR * ( $scoreB - $expectedB ) );
 
-        return array (
-            'a' => $newRatingA,
-            'b' => $newRatingB
-        );
+        return ['a' => $newRatingA, 'b' => $newRatingB];
     }
 
 }

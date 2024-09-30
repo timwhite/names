@@ -21,7 +21,7 @@ class NameType extends AbstractType
             //->add('numberOfComparisons')
         ;
 
-        $builder->add('save', 'submit', array('label' => 'Add Name'));
+        $builder->add('save', 'submit', ['label' => 'Add Name']);
     }
     
     /**
@@ -29,9 +29,7 @@ class NameType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'App\Entity\Name'
-        ));
+        $resolver->setDefaults(['data_class' => \App\Entity\Name::class]);
     }
 
     /**

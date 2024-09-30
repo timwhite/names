@@ -18,7 +18,7 @@ class PersonType extends AbstractType
             ->add('name')
         ;
 
-        $builder->add('save', 'submit', array('label' => 'Add Person'));
+        $builder->add('save', 'submit', ['label' => 'Add Person']);
     }
 
     /**
@@ -26,9 +26,7 @@ class PersonType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'App\Entity\Person'
-        ));
+        $resolver->setDefaults(['data_class' => \App\Entity\Person::class]);
     }
 
     /**
