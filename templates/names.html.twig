@@ -63,11 +63,11 @@
             <td>{{ rank.rank }}</td>
             <td>{{ rank.numberOfComparisons }}</td>
             <td><a
-                        href="{{ path('name_rank_delete', {'id': rank.name.id}) }}"
+                        href="{{ path('name_rank_delete', {'name': rank.name.id}) }}"
                         data-toggle="tooltip"
                         title="Delete {{ rank.name.name }}"
                         onclick="return confirm('Are you sure you want to delete {{ rank.name.name }}?')"
-                        ><span class="glyphicon glyphicon-remove text-danger""></span></a></td>
+                        ><span class="glyphicon glyphicon-remove text-danger"></span>x</a></td>
         </tr>
         {% endif %}
     {% endfor %}
@@ -91,11 +91,11 @@
                     <td>{{ rank.rank }}</td>
                     <td>{{ rank.numberOfComparisons }}</td>
                     <td><a
-                                href="{{ path('name_rank_delete', {'id': rank.name.id}) }}"
+                                href="{{ path('name_rank_delete', {'name': rank.name.id}) }}"
                                 data-toggle="tooltip"
                                 title="Delete {{ rank.name.name }}"
                                 onclick="return confirm('Are you sure you want to delete {{ rank.name.name }}?')"
-                                ><span class="glyphicon glyphicon-remove text-danger""></span></a></td>
+                                ><span class="glyphicon glyphicon-remove text-danger"></span>x</a></td>
                 </tr>
             {% endif %}
         {% endfor %}

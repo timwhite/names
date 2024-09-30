@@ -23,6 +23,12 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
+        dql:
+            numeric_functions:
+                rand: DoctrineExtensions\Query\Mysql\Rand
+            string_functions:
+                random: DoctrineExtensions\Query\Sqlite\Random
+
 when@test:
     doctrine:
         dbal:

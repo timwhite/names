@@ -3,9 +3,16 @@
 {% block body %}
     <h1>Who are you comparing as?</h1>
 
+        <ul>
         {% for person in people %}
-            <a class="btn btn-warning" href="{{ path('name_rank_compare', {'personid': person.id}) }}">{{ person.name }}</a>
+            <li><a class="btn btn-warning" href="{{ path('name_rank_compare', {'person': person.id}) }}">{{ person.name }}</a>
+                <a href="{{ path('name_rank_compare', {'person': person.id, 'gender': 'male'}) }}">(Just Boys)</a> <a href="{{ path('name_rank_compare', {'person': person.id, 'gender': 'female'}) }}">(Just Girls)</a>
+            </li>
         {% endfor %}
+        </ul>
+
+
+    <a href="{{ path('name_rank_person_name') }}">Add new person</a>
 
 
 {% endblock %}

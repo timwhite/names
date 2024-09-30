@@ -12,6 +12,21 @@
         {% endblock %}
     </head>
     <body>
+        <nav>
+            <a href="{{ path('name_rank_compare_as') }}">Select comparison person</a>
+            <a href="{{ path('name_rank_new') }}">Add Baby Names</a>
+            <a href="{{ path('name_rank_names') }}">Show all names</a>
+        </nav>
+        <div>
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+        </div>
         {% block body %}{% endblock %}
     </body>
 </html>

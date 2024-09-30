@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\Name;
 use App\Entity\Person;
 use App\Entity\Ranking;
+use App\Form\NameType;
+use App\Form\PersonType;
 use Doctrine\ORM\EntityManagerInterface;
-use NameRankBundle\Form\NameType;
-use NameRankBundle\Form\PersonType;
 use Rating\Rating;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -23,20 +25,20 @@ class DefaultController extends AbstractController
     #[Route(path: '/person/new', name: 'person_name')]
     public function newPersonAction(Request $request)
     {
-        $people = $this->em->getRepository('NameRankBundle:Person')->findAll();
+        $people = $this->em->getRepository(Person::class)->findAll();
 
         $person = new Person();
-        $form = $this->createForm(new PersonType(), $person);
+        $form = $this->createForm(PersonType::class, $person);
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             // save
             $this->em->persist($person);
 
             $this->em->flush();
 
-            return $this->redirectToRoute('name_rank_person_new');
+            return $this->redirectToRoute('name_rank_compare_as');
         }
 
         return $this->render(
@@ -48,16 +50,17 @@ class DefaultController extends AbstractController
         );
     }
 
+    #[Route(path: '/name/new', name: 'new')]
     public function newAction(Request $request)
     {
-        $names = $this->em->getRepository('NameRankBundle:Name');
+        $names = $this->em->getRepository(Name::class);
 
         $name = new Name();
-        $form = $this->createForm(new NameType(), $name);
+        $form = $this->createForm(NameType::class, $name);
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             // save
             $this->em->persist($name);
             $this->createRankingForAllPeople($name);
@@ -68,7 +71,7 @@ class DefaultController extends AbstractController
         }
 
         return $this->render(
-            'NameRankBundle:Default:newname.html.twig',
+            'newname.html.twig',
             [
                 'names' => $names->findAll(),
                 'newform' => $form->createView()
@@ -76,11 +79,9 @@ class DefaultController extends AbstractController
         );
     }
 
-    public function deleteNameAction($id)
+    #[Route(path: '/name/delete/{name}', name: 'delete')]
+    public function deleteNameAction(Name $name)
     {
-        $names = $this->em->getRepository('NameRankBundle:Name');
-        $name = $names->findById($id)[0];
-
         foreach($name->getRanking() as $ranking)
         {
             $this->em->remove($ranking);
@@ -94,14 +95,15 @@ class DefaultController extends AbstractController
 
     }
 
+    #[Route(path: '/name/updateall', name: 'name_updateall')]
     public function updateAllAction(Request $request)
     {
         $number_of_names_to_update = 0;
 
-        $names = $this->em->getRepository('NameRankBundle:Name')->findAll();
+        $names = $this->em->getRepository(Name::class)->findAll();
 
         $form = $this->createFormBuilder()
-            ->add('UpdateAll', 'submit', ['label' => 'Update All Rankings'])
+            ->add('UpdateAll', SubmitType::class, ['label' => 'Update All Rankings'])
             ->getForm()
         ;
 
@@ -124,7 +126,7 @@ class DefaultController extends AbstractController
         }
 
         return $this->render(
-            'NameRankBundle:Default:updateall.html.twig',
+            'updateall.html.twig',
             [
                 'numtoupdate' => $number_of_names_to_update,
                 'form' => $form->createView()
@@ -137,8 +139,8 @@ class DefaultController extends AbstractController
     {
         // Fetch all people who don't already have a ranking for $name
         $query = $this->em->createQuery("
-          SELECT p FROM NameRankBundle\Entity\Person p WHERE p.id NOT IN (
-            SELECT IDENTITY(r.person) FROM NameRankBundle\Entity\Ranking r WHERE r.name = :nameid
+          SELECT p FROM ".Person::class." p WHERE p.id NOT IN (
+            SELECT IDENTITY(r.person) FROM ".Ranking::class." r WHERE r.name = :nameid
            )");
         $query->setParameter('nameid', $name->getId());
         $people_missing_ranking = $query->execute();
@@ -159,20 +161,21 @@ class DefaultController extends AbstractController
         return $this->em->flush();
     }
 
+    #[Route(path: '/names', name: 'names')]
     public function listNamesAction()
     {
-        $people = $this->em->getRepository('NameRankBundle:Person');
+        $people = $this->em->getRepository(Person::class);
         $names = $this->em->createQuery('
             SELECT n, SUM(r.rank) as HIDDEN overallrank
-            FROM NameRankBundle\Entity\Name n
-            JOIN NameRankBundle\Entity\Ranking r
+            FROM '.Name::class.' n
+            JOIN '.Ranking::class.' r
             WHERE n.id = r.name
             GROUP BY n.id
             ORDER BY overallrank DESC
         ')->execute();
 
         return $this->render(
-            'NameRankBundle:Default:names.html.twig',
+            'names.html.twig',
             [
                 'people' => $people->findAll(),
                 'names' => $names,
@@ -197,30 +200,40 @@ class DefaultController extends AbstractController
 
     }
 
-    public function compareNamesAction(Request $request, $personid)
+    #[Route(path: '/compare/{person}/{gender}', name: 'compare')]
+    public function compareNamesAction(Request $request, Person $person, string $gender = null)
     {
-        $ismale = random_int(0,1);
+        $random_gender = False;
+        if ($gender === null) {
+            $ismale = random_int(0,1);
+            $gender = $ismale ? 'male' : 'female';
+            $random_gender = True;
+        } else {
+            $ismale = $gender === 'male' ? 1 : 0;
+        }
 
-        $people = $this->em->getRepository('NameRankBundle:Person');
-        $person = $people->findById($personid)[0];
 
         $query = $this->em->createQuery('
-          SELECT r, (RAND() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
-          FROM NameRankBundle\Entity\Ranking r JOIN NameRankBundle\Entity\Name n
+          SELECT r, (random() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
+          FROM ' . Ranking::class. ' r JOIN '.Name::class.' n
           WHERE n.id = r.name
           AND n.is_male = :ismale
           AND r.person = :person
           ORDER BY randcomp');
         $query->setMaxResults(1);
         $query->setParameter('ismale', $ismale);
-        $query->setParameter('person', $personid);
+        $query->setParameter('person', $person->getId());
         $ranking1 = $query->execute();
+        if (sizeof($ranking1) < 1) {
+            $this->addFlash('error', "Not enough $gender names");
+            return $this->redirectToRoute('name_rank_new');
+        }
         $name1 = $ranking1[0]->getName();
 
 
         $query = $this->em->createQuery('
-          SELECT r, (RAND() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
-          FROM NameRankBundle\Entity\Ranking r JOIN NameRankBundle\Entity\Name n
+          SELECT r, (random() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
+          FROM ' . Ranking::class. ' r JOIN '.Name::class.' n
           WHERE n.id = r.name
           AND n.is_male = :ismale
           AND r.id != :id
@@ -229,15 +242,19 @@ class DefaultController extends AbstractController
         $query->setMaxResults(1);
         $query->setParameter('id', $ranking1[0]->getId());
         $query->setParameter('ismale', $ismale);
-        $query->setParameter('person', $personid);
+        $query->setParameter('person', $person);
         $ranking2 = $query->execute();
+        if (sizeof($ranking2) < 1) {
+            $this->addFlash('error', "Not enough $gender names");
+            return $this->redirectToRoute('name_rank_new');
+        }
         $name2 = $ranking2[0]->getName();
 
         $form = $this->createFormBuilder()
-            ->add('name1', 'submit', ['label' => $name1->getName()])
-            ->add('name2', 'submit', ['label' => $name2->getName()])
-            ->add('name1val', 'hidden', ['data' => $ranking1[0]->getId()])
-            ->add('name2val', 'hidden', ['data' => $ranking2[0]->getId()])
+            ->add('name1', SubmitType::class, ['label' => $name1->getName()])
+            ->add('name2', SubmitType::class, ['label' => $name2->getName()])
+            ->add('name1val', HiddenType::class, ['data' => $ranking1[0]->getId()])
+            ->add('name2val', HiddenType::class, ['data' => $ranking2[0]->getId()])
             ->getForm()
             ;
 
@@ -245,18 +262,18 @@ class DefaultController extends AbstractController
 
         if($form->isSubmitted())
         {
-            $rankings = $this->em->getRepository('NameRankBundle:Ranking');
+            $rankings = $this->em->getRepository(Ranking::class);
             $ranking1 = $rankings->findById($form->get('name1val')->getData())[0];
             $ranking2 = $rankings->findById($form->get('name2val')->getData())[0];
             if($form->get('name1')->isClicked())
             {
                 // Name1 wins
-                $rating = new Rating($ranking1->getRank(), $ranking2->getRank(), 1, 0);
+                $rating = new \App\Rating\Rating($ranking1->getRank(), $ranking2->getRank(), 1, 0);
             }
             if($form->get('name2')->isClicked())
             {
                 // Name 1 lost
-                $rating = new Rating($ranking1->getRank(), $ranking2->getRank(), 0, 1);
+                $rating = new \App\Rating\Rating($ranking1->getRank(), $ranking2->getRank(), 0, 1);
             }
 
             $results = $rating->getNewRatings();
@@ -268,11 +285,16 @@ class DefaultController extends AbstractController
             $this->em->persist($ranking2);
             $this->em->flush();
 
-            return $this->redirectToRoute('name_rank_compare', ['personid' => $personid]);
+            if ($random_gender)
+            {
+                return $this->redirectToRoute('name_rank_compare', ['person' => $person->getId()]);
+            }
+            return $this->redirectToRoute('name_rank_compare', ['person' => $person->getId(), 'gender' => $gender]);
+
         }
 
         return $this->render(
-            'NameRankBundle:Default:compare.html.twig',
+            'compare.html.twig',
             [
                 'name1' => $ranking1[0],
                 'name2' => $ranking2[0],

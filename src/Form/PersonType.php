@@ -1,12 +1,13 @@
 <?php
 
-namespace NameRankBundle\Form;
+namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class NameType extends AbstractType
+class PersonType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,20 +17,17 @@ class NameType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('isMale', 'checkbox', ['required' => false])
-            //->add('rank')
-            //->add('numberOfComparisons')
         ;
 
-        $builder->add('save', 'submit', ['label' => 'Add Name']);
+        $builder->add('save', SubmitType::class, ['label' => 'Add Person']);
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(['data_class' => \App\Entity\Name::class]);
+        $resolver->setDefaults(['data_class' => \App\Entity\Person::class]);
     }
 
     /**
@@ -37,6 +35,6 @@ class NameType extends AbstractType
      */
     public function getName()
     {
-        return 'namerankbundle_name';
+        return 'namerankbundle_person';
     }
 }
