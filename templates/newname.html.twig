@@ -1,11 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{{ form(newform) }}
+    <div class="card">
+        <header class="card-header">
+        <h1 class="card-header-title">Add New Name</h1>
+        </header>
+        <div class="card-content">
+        {{ form(newform) }}
+        </div>
+    </div>
 
-    <ul>
-        {% for name in names %}
-            <li>{{ name.name }} {% if name.ismale %}(M){% else %}(F){% endif %}</li>
-        {% endfor %}
-    </ul>
+    <div class="card">
+        <header class="card-header">
+            <h1 class="card-header-title">Existing names</h1>
+        </header>
+        <div class="card-content content">
+            <ul>
+                {% for name in names %}
+                    <li>{{ name.name }} {% if name.ismale %}(Male){% else %}(Female){% endif %}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 {% endblock %}

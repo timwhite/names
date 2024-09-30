@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Who are you comparing as?</h1>
-
+    <div class="card">
+        <h1 class="card-header-title card-header title">Who are you comparing as?</h1>
+        <div class="card-content content">
         <ul>
         {% for person in people %}
             <li><a class="btn btn-warning" href="{{ path('name_rank_compare', {'person': person.id}) }}">{{ person.name }}</a>
@@ -12,7 +13,11 @@
         </ul>
 
 
-    <a href="{{ path('name_rank_person_name') }}">Add new person</a>
+        </div>
+        <div class="card-footer">
+            <a class="card-footer-item" href="{{ path('name_rank_person_name') }}">Add new person</a>
+        </div>
+    </div>
 
 
 {% endblock %}

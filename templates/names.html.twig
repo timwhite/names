@@ -1,106 +1,118 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h3>Overall Rankings</h3>
-    <div class="row">
-    <div class="col-xs-6 table-responsive">
-        <table class="table table-condensed">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Rank</th>
-            </tr>
-            </thead>
-            {% for name in names %}
-                {% if name.isMale %}
-                    <tr>
-                        <td>{{ name.name }}</td>
-                        <td>{{ name.rank }}</td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-    </div>
+<div class="columns is-multiline">
+    <div class="column is-half">
+    <div class="card">
+    <h1 class="title card-header card-header-title">Overall Rankings</h1>
+        <div class="card-content columns">
+            <div class="column">
+            <h4 class="subtitle">Male names</h4>
+            <table class="table is-bordered is-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Rank</th>
+                </tr>
+                </thead>
+                {% for name in names %}
+                    {% if name.isMale %}
+                        <tr>
+                            <td>{{ name.name }}</td>
+                            <td>{{ name.rank }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+            </div>
+            <div class="column">
 
-    <div class="col-xs-6 table-responsive">
-        <table class="table table-condensed">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Rank</th>
-            </tr>
-            </thead>
-            {% for name in names %}
-                {% if not name.isMale %}
-                    <tr>
-                        <td>{{ name.name }}</td>
-                        <td>{{ name.rank }}</td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
+            <h4 class="subtitle">Female names</h4>
+            <table class="table is-bordered is-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Rank</th>
+                </tr>
+                </thead>
+                {% for name in names %}
+                    {% if not name.isMale %}
+                        <tr>
+                            <td>{{ name.name }}</td>
+                            <td>{{ name.rank }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+            </div>
+        </div>
     </div>
-
     </div>
 
     {% for person in people %}
-        <h3>Rankings for {{ person.name }}</h3>
-<div class="row">
-    <div class="col-xs-6 table-responsive">
-    <table class="table table-condensed">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Rank</th>
-            <th>#</th>
-            <th></th>
-        </tr>
-        </thead>
-    {% for rank in person.rankings %}
-        {% if rank.name.isMale %}
-        <tr>
-            <td>{{ rank.name.name }}</td>
-            <td>{{ rank.rank }}</td>
-            <td>{{ rank.numberOfComparisons }}</td>
-            <td><a
-                        href="{{ path('name_rank_delete', {'name': rank.name.id}) }}"
-                        data-toggle="tooltip"
-                        title="Delete {{ rank.name.name }}"
-                        onclick="return confirm('Are you sure you want to delete {{ rank.name.name }}?')"
-                        ><span class="glyphicon glyphicon-remove text-danger"></span>x</a></td>
-        </tr>
-        {% endif %}
+    <div class="column is-half">
+    <div class="card">
+        <h1 class="title card-header card-header-title">Rankings for {{ person.name }}</h1>
+        <div class="card-content columns">
+            <div class="column">
+                <h4 class="subtitle">Male names</h4>
+                <table class="table is-bordered is-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Rank</th>
+                        <th>#</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                {% for rank in person.rankings %}
+                    {% if rank.name.isMale %}
+                    <tr>
+                        <td>{{ rank.name.name }}</td>
+                        <td>{{ rank.rank }}</td>
+                        <td>{{ rank.numberOfComparisons }}</td>
+                        <td><a
+                                    href="{{ path('name_rank_delete', {'name': rank.name.id}) }}"
+                                    data-toggle="tooltip"
+                                    title="Delete {{ rank.name.name }}"
+                                    onclick="return confirm('Are you sure you want to delete {{ rank.name.name }}?')"
+                                    ><span class="glyphicon glyphicon-remove text-danger"></span>x</a></td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                </table>
+            </div>
+            <div class="column">
+                <h4 class="subtitle">Female names</h4>
+                <table class="table is-bordered is-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Rank</th>
+                        <th>#</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    {% for rank in person.rankings %}
+                        {% if not rank.name.isMale %}
+                            <tr>
+                                <td>{{ rank.name.name }}</td>
+                                <td>{{ rank.rank }}</td>
+                                <td>{{ rank.numberOfComparisons }}</td>
+                                <td><a
+                                            href="{{ path('name_rank_delete', {'name': rank.name.id}) }}"
+                                            data-toggle="tooltip"
+                                            title="Delete {{ rank.name.name }}"
+                                            onclick="return confirm('Are you sure you want to delete {{ rank.name.name }}?')"
+                                            ><span class="glyphicon glyphicon-remove text-danger"></span>x</a></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    </div>
     {% endfor %}
-    </table>
-    </div>
-
-    <div class="col-xs-6 table-responsive">
-    <table class="table table-condensed">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Rank</th>
-            <th>#</th>
-            <th></th>
-        </tr>
-        </thead>
-        {% for rank in person.rankings %}
-            {% if not rank.name.isMale %}
-                <tr>
-                    <td>{{ rank.name.name }}</td>
-                    <td>{{ rank.rank }}</td>
-                    <td>{{ rank.numberOfComparisons }}</td>
-                    <td><a
-                                href="{{ path('name_rank_delete', {'name': rank.name.id}) }}"
-                                data-toggle="tooltip"
-                                title="Delete {{ rank.name.name }}"
-                                onclick="return confirm('Are you sure you want to delete {{ rank.name.name }}?')"
-                                ><span class="glyphicon glyphicon-remove text-danger"></span>x</a></td>
-                </tr>
-            {% endif %}
-        {% endfor %}
-    </table>
-    </div>
 </div>
-{% endfor %}
 {% endblock %}

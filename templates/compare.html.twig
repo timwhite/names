@@ -1,27 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+<div class="card">
 
     {% if ismale %}
-        {% set genderclass = 'btn btn-primary btn-lg btn-block' %}
+        {% set genderclass = 'button is-info is-light is-large is-fullwidth is-rounded' %}
     {% else %}
-        {% set genderclass = 'btn btn-success btn-lg btn-block' %}
+        {% set genderclass = 'button is-danger is-light is-large is-fullwidth is-rounded' %}
     {% endif %}
-    {{ form_start(form) }}
-    Comparing names as {{ person.name }}
-    <div class="row">
-
-        <div class="col-xs-12">
-            {{ form_widget(form.name1, {'attr': {'class': genderclass}}) }}
-        </div>
+    <div class=" card-header ">
+        <p class="has-text-centered card-header-title title">{{ person.name }} - Choose which name you like the most
+        </p>
     </div>
-    &nbsp;
-    <div class="row">
-        <div class="col-xs-12">
-            {{ form_widget(form.name2, {'attr': {'class': genderclass}}) }}
-        </div>
 
+    {{ form_start(form) }}
+
+    <div class="columns card-content">
+
+
+        <div class="column">
+                {{ form_widget(form.name1, {'attr': {'class': genderclass}}) }}
+        </div>
+        &nbsp;
+        <div class="column">
+                {{ form_widget(form.name2, {'attr': {'class': genderclass}}) }}
+        </div>
     </div>
     {{ form_end(form) }}
+</div>
 {% endblock %}
