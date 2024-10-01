@@ -211,9 +211,8 @@ class DefaultController extends AbstractController
             $ismale = $gender === 'male' ? 1 : 0;
         }
 
-
         $query = $this->em->createQuery('
-          SELECT r, (random() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
+          SELECT r, (abs(random())/1000000000000 * (r.numberOfComparisons + 1)) as HIDDEN randcomp
           FROM ' . Ranking::class. ' r JOIN '.Name::class.' n
           WHERE n.id = r.name
           AND n.is_male = :ismale
@@ -231,7 +230,7 @@ class DefaultController extends AbstractController
 
 
         $query = $this->em->createQuery('
-          SELECT r, (random() * (r.numberOfComparisons + 1)) as HIDDEN randcomp
+          SELECT r, (abs(random())/1000000000000 * (r.numberOfComparisons + 1)) as HIDDEN randcomp
           FROM ' . Ranking::class. ' r JOIN '.Name::class.' n
           WHERE n.id = r.name
           AND n.is_male = :ismale
